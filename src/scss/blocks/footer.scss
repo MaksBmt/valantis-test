@@ -1,0 +1,15 @@
+.footer {
+    background-color: $green-common;
+
+    &__wrap {
+        padding: 20px;
+        display: flex;
+    }
+
+    &__text {
+        margin-left: 20px;
+        font-family: "Roboto-Regular";
+        font-size: 14px;
+        line-height: 18px;
+    }
+}

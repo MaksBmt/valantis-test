@@ -1,0 +1,105 @@
+    .dropdown {
+        position: relative;
+
+        &__wrap-input {
+            position: relative;
+            z-index: 100;
+
+            &::before {
+                position: absolute;
+                content: '';
+                width: 8px;
+                height: 8px;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%) rotate(180deg);
+                transition: transform 0.3s ease;
+                background-image: url(../img/trigon.svg);
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+
+                cursor: pointer;
+            }
+        }
+
+        &__input {
+            width: 100%;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            padding-left: 20px;
+            padding-right: 5px;
+            outline: 2px solid #828F96;
+            border: none;
+            border-radius: 30px;
+            box-sizing: border-box;
+            cursor: pointer;
+            background-color: $white;
+            pointer-events: all;
+        }
+
+        &__wrap {
+            position: absolute;
+            top: 10px;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: opacity 0.3s ease, max-height 0.3s ease;
+            background-color: $white;
+            z-index: 10;
+            box-shadow: 0px 5px 11px 0px #0000001A,
+
+                0px 19px 19px 0px #00000017,
+
+                0px 44px 26px 0px #0000000D,
+
+                0px 78px 31px 0px #00000003,
+
+                0px 121px 34px 0px #00000000;
+
+        }
+
+        &--active {
+            .dropdown__wrap-input {
+                &::before {
+                    transform: translateY(-50%) rotate(0deg);
+                    transition: transform 0.3s ease;
+                }
+            }
+
+            .dropdown__wrap {
+                opacity: 1;
+            }
+        }
+
+        &__list {
+            padding: 30px 20px 15px;
+            padding-top: 40px;
+
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #3e9cdc rgba(11, 36, 177, 0.85);
+        }
+
+        &__item {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+
+            &--activ {
+                color: $red-commom;
+            }
+
+            &:hover {
+                background-color: #d8d3d3;
+            }
+
+            &:nth-child(n+2) {
+                margin-top: 5px;
+            }
+        }
+    }
+
+    .dropdown__input.form__input--error {
+        outline: 2px solid $red-commom;
+    }

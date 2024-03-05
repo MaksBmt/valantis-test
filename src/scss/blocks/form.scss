@@ -1,0 +1,86 @@
+.form {
+    padding: 20px;
+    padding-bottom: 0;
+    width: 250px;
+    margin: 0 auto;
+
+    @media(min-width: $md) {
+        width: auto;
+        margin: 0;
+        display: flex;
+        justify-content: space-around;
+
+        &__dropdown {
+            width: 250px;
+        }
+    }
+
+    &__dropdown {
+        margin-bottom: 20px;
+    }
+
+    &__wrap-input {
+        position: relative;
+
+        @media(min-width: $md) {
+            width: 50%;
+        }
+    }
+
+    &__input {
+        width: 100%;
+        padding: 10px;
+        padding-right: 30px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        background-color: $white;
+        box-sizing: border-box;
+
+        &--error {
+            outline: 1px solid $red-commom;
+        }
+    }
+
+    &__button {
+        @include button();
+        background-color: inherit;
+        position: absolute;
+        top: 30%;
+        right: 5px;
+        transform: translateY(-50%);
+
+        &:hover {
+            .form__svg {
+                color: $red-commom;
+            }
+        }
+
+        @media(min-width: $md) {
+            top: 24%;
+        }
+    }
+
+    &__svg {
+        transition: all 0.3s ease 0s;
+    }
+
+    &__error {
+        min-height: 15px;
+        font-size: 12px;
+        line-height: 15px;
+        color: $red-commom;
+        padding: 5px;
+        margin: 0;
+        margin-top: 10px;
+        border: 1px dashed $red-commom;
+        opacity: 0;
+        transition: opacity 0.3s;
+
+        &--active {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+    }
+}

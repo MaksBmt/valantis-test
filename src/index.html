@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+@@include('html/head.html',{
+"title":"Главная страница тестового задания для Вилантис"
+})
+
+<body>
+  @@include('html/header.html',{})
+  <main class="main">
+    <div class="main__wrap wrap">
+      <form action="/" class="form main__form" method="post" id="form">
+
+        <div class="form__dropdown dropdown">
+          <div class="dropdown__wrap-input">
+
+            <input type="text" name="category" id="category" class="dropdown__input"
+              placeholder="Выберете категорию поиска" value readonly="readonly">
+
+          </div>
+          <div class="dropdown__wrap">
+            <ul class="dropdown__list">
+              <li class="dropdown__item" data-name="price">Поиск по цене</li>
+              <li class="dropdown__item" data-name="product">Поиск по названию</li>
+              <li class="dropdown__item" data-name="brand">Поиск по бренду</li>
+            </ul>
+          </div>
+          <p class="form__error" data-error="category"></p>
+        </div>
+
+        <div class="form__wrap-input">
+          <input type="text" class="form__input" placeholder="Поиск по сайту..." id="search" name="filter"
+            autocomplete="off">
+          <button class="form__button">
+            <svg class="form__svg" width="15" height="15">
+              <use xlink:href="img/icons/icons.svg#search"></use>
+            </svg>
+          </button>
+          <p class="form__error" data-error="search"></p>
+        </div>
+
+      </form>
+      <h1 class="main__title">Список товаров</h1>
+
+    </div>
+  </main>
+  @@include('html/footer.html',{})
+  <div class="preloader">
+    <div class="preloader__wrap">
+      <svg width="65" height="65" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle class="stroke" fill="transparent" cx="33" cy="33" r="30"></circle>
+      </svg>
+      <p class="preloader__text">Загружается список товаров ...</p>
+    </div>
+
+  </div>
+  <script src="js/app.min.js"></script>
+</body>
+
+</html>
