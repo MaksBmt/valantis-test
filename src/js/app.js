@@ -12,7 +12,8 @@ import ProdoctNone from "./modules/components/product-none.js";
 
 correctMarginMain();
 
-const URL = 'http://api.valantis.store:40000/';
+
+const URL = 'https://api.valantis.store:41000/';
 const NameOption = {
   PRICE: 'price',
   PRODUCT: 'product',
@@ -52,7 +53,7 @@ const value = {
   catecory: '', search: ''
 }
 
-const clickPagesHandler = (pages, isButtonContinue, arrayProducts, { target }) => { 
+const clickPagesHandler = (pages, isButtonContinue, arrayProducts, { target }) => {
   target.parentElement.querySelectorAll('.pages__item').forEach((i) => {
 
     if (i.classList.contains('pages__item--active')) i.classList.remove('pages__item--active');
@@ -69,7 +70,7 @@ const clickPagesHandler = (pages, isButtonContinue, arrayProducts, { target }) =
     }
   }
 
-  renderMain(target.dataset.page, arrayProducts); 
+  renderMain(target.dataset.page, arrayProducts);
 }
 
 const clickButtonContinueHandler = async () => {
@@ -82,7 +83,7 @@ const clickButtonContinueHandler = async () => {
 
   pageList.clear();
   button.clear();
-  renderPages(page, params.pages, true, params.products);  
+  renderPages(page, params.pages, true, params.products);
 }
 
 const clickButtonSearchHandler = async (evt) => {
@@ -98,9 +99,9 @@ const clickButtonSearchHandler = async (evt) => {
   handleOptionClick(value.catecory);
 }
 
-const renderPages = function (page = 1, pages, isButtonContinue, arrayProducts) {  
+const renderPages = function (page = 1, pages, isButtonContinue, arrayProducts) {
 
-  if (arrayProducts.length <= VALUE_PAGES) return;  
+  if (arrayProducts.length <= VALUE_PAGES) return;
   pageList.create();
   const pagesBox = main.querySelector('.pages');
 
@@ -119,10 +120,10 @@ const renderPages = function (page = 1, pages, isButtonContinue, arrayProducts) 
   }
 }
 
-const renderMain = function (page = 1, arrayProducts) { 
+const renderMain = function (page = 1, arrayProducts) {
   productNone.clear();
 
-  if (!arrayProducts.length) { 
+  if (!arrayProducts.length) {
     productNone.create();
     return;
   }
@@ -133,9 +134,9 @@ const renderMain = function (page = 1, arrayProducts) {
   if (productBox !== null) {
 
     const productItem = new ProductItem(productBox);
-    for (let index = startproduct - 1; index < (page * VALUE_PAGES) && (index < arrayProducts.length); index++) {    
+    for (let index = startproduct - 1; index < (page * VALUE_PAGES) && (index < arrayProducts.length); index++) {
 
-      productItem.create(arrayProducts[index], index);     
+      productItem.create(arrayProducts[index], index);
     }
   }
 }
@@ -152,8 +153,8 @@ const renderFilter = function (pages, isButtonContinue) {
     btnReturn.addEventListener('click', clickButtonReturnHandler);
   }
 
-  renderPages(1, pages, isButtonContinue, paramsFilter.products);  
-  renderMain(1, paramsFilter.products);   
+  renderPages(1, pages, isButtonContinue, paramsFilter.products);
+  renderMain(1, paramsFilter.products);
   form.clearInputs();
 }
 
@@ -161,40 +162,58 @@ const clickButtonReturnHandler = () => {
   button.clearBtnReturn();
   pageList.clear();
   productList.clear();
-  renderPages(1, params.pages, true, params.products); 
-  renderMain(1, params.products);  
+  renderPages(1, params.pages, true, params.products);
+  renderMain(1, params.products);
 }
 
 const handleOptionClick = async (nameOption) => {
   switch (nameOption) {
     case NameOption.PRICE:
       const fetchResultPrice = await api.getProductsFilter({ price: value.search });
-      paramsFilter.products = fetchResultPrice.fetchProducts;  
-      paramsFilter.pages = Math.ceil(paramsFilter.products.length / VALUE_PAGES);  
-      renderFilter(paramsFilter.pages, fetchResultPrice.isButtonContinue);  
+      paramsFilter.products = fetchResultPrice.fetchProducts;
+      paramsFilter.pages = Math.ceil(paramsFilter.products.length / VALUE_PAGES);
+      renderFilter(paramsFilter.pages, fetchResultPrice.isButtonContinue);
       break;
     case NameOption.PRODUCT:
       const fetchResultProduct = await api.getProductsFilter({ product: value.search });
-      paramsFilter.products = fetchResultProduct.fetchProducts;  
-      paramsFilter.pages = Math.ceil(paramsFilter.products.length / VALUE_PAGES);  
-      renderFilter(paramsFilter.pages, fetchResultProduct.isButtonContinue);  
+      paramsFilter.products = fetchResultProduct.fetchProducts;
+      paramsFilter.pages = Math.ceil(paramsFilter.products.length / VALUE_PAGES);
+      renderFilter(paramsFilter.pages, fetchResultProduct.isButtonContinue);
       break;
     case NameOption.BRAND:
       const fetchResultBrand = await api.getProductsFilter({ brand: value.search });
       paramsFilter.products = fetchResultBrand.fetchProducts;
       paramsFilter.pages = Math.ceil(paramsFilter.products.length / VALUE_PAGES);
-      renderFilter(paramsFilter.pages, fetchResultBrand.isButtonContinue); 
+      renderFilter(paramsFilter.pages, fetchResultBrand.isButtonContinue);
       break;
   }
 }
 
+const renderErrorTopage = function() {  
+  main.remove();
+  const base = document.querySelector('main');
+  base.style.cssText = `padding:20px;display:grid; place-items:center;font-size:clamp(16px, 16px + 1.27vw, 45px);`
+  const html = `<p>Возникла ошибка соеденения. Попробуйте позже..</p>`
+  base.insertAdjacentHTML('afterbegin',html)
+}
+
 const renderInit = async function () {
   params.products = await api.getProducts(0);
-  params.pages = Math.ceil(params.products.length / VALUE_PAGES);
-  renderPages(1, params.pages, true, params.products);  
-  renderMain(1, params.products);   
 
-  btnForm.addEventListener('click', clickButtonSearchHandler);
+  if (params.products) {
+    params.pages = Math.ceil(params.products.length / VALUE_PAGES);
+    renderPages(1, params.pages, true, params.products);
+    renderMain(1, params.products);
+
+    btnForm.addEventListener('click', clickButtonSearchHandler);
+  } else {
+    renderErrorTopage()
+  }
+  // params.pages = Math.ceil(params.products.length / VALUE_PAGES);
+  // renderPages(1, params.pages, true, params.products);  
+  // renderMain(1, params.products);   
+
+  // btnForm.addEventListener('click', clickButtonSearchHandler);
 }
 
 renderInit(); 

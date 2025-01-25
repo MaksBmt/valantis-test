@@ -35,10 +35,18 @@ export default class Api {
         this.preloader.toggle();
         const id = await this._fetch("get_ids", { offset, limit: this.limit });
 
-        const ids = getUniqueArray(id.result);
-        const fetchProducts = await this._fetch("get_items", { ids })
-        if (fetchProducts.result) this.preloader.toggle();
-        return getUniqueArray(fetchProducts.result);
+        if(id){
+            const ids = getUniqueArray(id.result);
+            const fetchProducts = await this._fetch("get_items", { ids })
+            if (fetchProducts.result) this.preloader.toggle();
+            return getUniqueArray(fetchProducts.result);
+        } else {
+            this.preloader.toggle();
+        }
+        // const ids = getUniqueArray(id.result);
+        // const fetchProducts = await this._fetch("get_items", { ids })
+        // if (fetchProducts.result) this.preloader.toggle();
+        // return getUniqueArray(fetchProducts.result);
     }
 
     async getProductsFilter(paramsFetch) {
@@ -72,6 +80,9 @@ export default class Api {
     }
 
     static catchError(err) {
-        throw err;
+        // throw err;
+        console.error("Ошибка запроса:", err.message || err);
+        alert("Произошла ошибка соединения с сервером. Проверьте подключение к интернету или попробуйте позже.");
+        return null;
     }
 }
